@@ -70,6 +70,11 @@ namespace WebApi.Services
             {
                 dataContext.Roles.RemoveRange(dataContext.Roles.Where(x => x.UserId == user.UserId));
                 dataContext.SaveChanges();
+                if (user.Password == null)
+                {
+                    var userDB = GetById(user.UserId);
+                    user.Password = userDB.Password;
+                }
                 dataContext.Users.Update(user);
                 dataContext.SaveChanges();
             }
