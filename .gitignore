@@ -34,6 +34,8 @@ typings
 # Optional npm cache directory
 .npm
 
+.config
+
 # Optional REPL history
 .node_repl_history
 
@@ -54,6 +56,8 @@ obj
 
 # dependencies
 /node_modules
+/dist
+dist
 
 # profiling files
 chrome-profiler-events*.json
