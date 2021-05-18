@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class UsersComponent {
     loading = false;
     users: User[];
+    isAdminUser: boolean = false;
     currentUser: any = {
         userName: ''
     };
@@ -27,6 +28,11 @@ export class UsersComponent {
             this.users.forEach(u => {
                 if (u.roles && u.roles.length > 0) {
                     u['rolePlain'] = u.roles.map(s => s.roleName); 
+                }
+                if (this.currentUser.id === u.userId) {
+                    if (u['rolePlain'].includes('Global Gleason Admin')) {
+                        this.isAdminUser = true;
+                    }
                 }
             });
         });

@@ -1,7 +1,7 @@
 ﻿<div class="card">
     <div class="card-body">
         <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
-        <div style="float: right;">
+        <div style="float: right;" *ngIf="isAdminUser">
             <a class="btn btn-link" routerLink="/addOrUpdateuser"  [queryParams]="{act: 'add'}">Add New User +</a>
         </div>
         <br />
@@ -14,7 +14,7 @@
                 <th>Email</th>
                 <th>Username</th>
                 <th>Roles</th>
-                <th>Action</th>
+                <th *ngIf="isAdminUser">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -25,7 +25,7 @@
                 <td>{{user.email}}</td>
                 <td>{{user.username}}</td>
                 <td>{{user.rolePlain}}</td>
-                <td>
+                <td *ngIf="isAdminUser">
                     <span *ngIf="currentUser.username !== user.username">
                         <a class="btn btn-link" (click)="edit(user)">Edit</a>
                         <a class="btn btn-link" (click)="delete(user)">Delete</a>
