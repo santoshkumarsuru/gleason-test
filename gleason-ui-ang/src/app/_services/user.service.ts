@@ -15,4 +15,12 @@ export class UserService {
     addUser(user) {
         return this.http.post<any>(`${environment.apiUrl}/users/addUser`, user);
     }
+
+    updateUser(user) {
+        return this.http.post<any>(`${environment.apiUrl}/users/updateUser`, user);
+    }
+
+    deleteUser(user) {
+        return this.http.post<any>(`${environment.apiUrl}/users/deleteUser`, user);
+    }
 }

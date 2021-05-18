@@ -44,7 +44,8 @@
       </div>
       <div style="float: right;">
         <a class="btn btn-danger" routerLink="/users">Cancel</a> &nbsp;&nbsp;
-        <button type="submit" (click)="addUser()" class="btn btn-primary">Add User</button>
+        <button type="submit" (click)="addUser()" class="btn btn-primary" *ngIf="currentAction == 'add'"> Add User</button>
+        <button type="submit" (click)="updateUser()" class="btn btn-primary" *ngIf="currentAction == 'update'"> Update User</button>
       </div>
     </div>
 </div>

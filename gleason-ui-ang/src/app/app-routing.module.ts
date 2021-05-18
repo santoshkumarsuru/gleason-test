@@ -5,12 +5,12 @@ import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { AuthGuard } from './_helpers';
 import { UsersComponent } from '@app/users';
-import { AddUserComponent } from '@app/add-user';
+import { AddUpdateUserComponent } from '@app/add-user';
 
 const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
-    { path: 'adduser', component: AddUserComponent, canActivate: [AuthGuard] },
+    { path: 'addOrUpdateuser', component: AddUpdateUserComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
 
     // otherwise redirect to home

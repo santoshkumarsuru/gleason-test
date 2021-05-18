@@ -20,6 +20,9 @@ namespace WebApi.Services
         IEnumerable<User> GetAll();
         User GetById(int id);
         void AddUser(User user);
+
+        void Update(User user);
+        void Delete(User user);
     }
 
     public class UserRepository : IUserRepository
@@ -52,10 +55,34 @@ namespace WebApi.Services
 
         public void AddUser(User user)
         {
+            user.Password = "test"; //Default password for all the users
             using (var dataContext = new SampleDBContext())
             {
-                dataContext.SaveChanges();
                 dataContext.Users.Add(user);
+                dataContext.SaveChanges();
+            }
+        }
+
+        public void Update(User user)
+        {
+
+            using (var dataContext = new SampleDBContext())
+            {
+                dataContext.Roles.RemoveRange(dataContext.Roles.Where(x => x.UserId == user.UserId));
+                dataContext.SaveChanges();
+                dataContext.Users.Update(user);
+                dataContext.SaveChanges();
+            }
+        }
+
+        public void Delete(User user)
+        {
+
+            using (var dataContext = new SampleDBContext())
+            {
+                dataContext.Roles.RemoveRange(dataContext.Roles.Where(x => x.UserId == user.UserId));
+                dataContext.SaveChanges();
+                dataContext.Entry(user).State = EntityState.Deleted;
                 dataContext.SaveChanges();
             }
         }

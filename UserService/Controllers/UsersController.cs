@@ -47,5 +47,25 @@ namespace WebApi.Controllers
             _logger.LogDebug("Completed: Inside UserController - AddUser");
             return Ok(user);
         }
+
+        [HttpPost]
+        [Route("updateUser")]
+        public IActionResult UpdateUser(User user)
+        {
+            _logger.LogDebug("Started: Inside UserController - UpdateUser");
+            _userService.Update(user);
+            _logger.LogDebug("Completed: Inside UserController - UpdateUser");
+            return Ok(user);
+        }
+
+        [HttpPost]
+        [Route("deleteUser")]
+        public IActionResult DeleteUser(User user)
+        {
+            _logger.LogDebug("Started: Inside UserController - UpdateUser");
+            _userService.Delete(user);
+            _logger.LogDebug("Completed: Inside UserController - UpdateUser");
+            return Ok(user);
+        }
     }
 }

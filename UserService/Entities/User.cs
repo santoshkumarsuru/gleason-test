@@ -11,23 +11,25 @@ namespace WebApi.Entities
         public string Username { get; set; }
         public string Customer { get; set; }
         public string Email { set; get; }
+        public bool IsTrailUser { set; get; }
         public ICollection<Role> Roles { get; set; }
 
+        private string _password;
         [JsonIgnore]
-        public string Password { set; get; }
-        //{
-        //    get
-        //    {
-        //        return _password;
-        //    }
+        public string Password
+        {
+            get
+            {
+                return _password;
+            }
 
-        //    set
-        //    {
-        //        byte[] data = System.Text.Encoding.ASCII.GetBytes(value);
-        //        data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
-        //        _password = System.Text.Encoding.ASCII.GetString(data);
-        //    }
-        //}
+            set
+            {
+                byte[] data = System.Text.Encoding.ASCII.GetBytes(value);
+                data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
+                _password = System.Text.Encoding.ASCII.GetString(data);
+            }
+        }
 
 
     }

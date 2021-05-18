@@ -1,1 +1,1 @@
-﻿export * from './add-user.component';
+﻿export * from './add-update-user.component';
