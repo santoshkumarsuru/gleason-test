@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace WebApi.Entities
@@ -8,8 +9,10 @@ namespace WebApi.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }
-
         [JsonIgnore]
         public string Password { get; set; }
+        public string Email { set; get; }
+        public ICollection<Role> Roles { get; set; }
+
     }
 }
