@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using WebApi.Entities;
 using WebApi.Models;
 using WebApi.Services;
 
@@ -9,10 +11,12 @@ namespace WebApi.Controllers
     public class UsersController : ControllerBase
     {
         private IUserRepository _userService;
+        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(IUserRepository userService)
+        public UsersController(ILogger<UsersController> logger, IUserRepository userService)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpPost("authenticate")]
@@ -32,6 +36,16 @@ namespace WebApi.Controllers
         {
             var users = _userService.GetAll();
             return Ok(users);
+        }
+
+        [HttpPost]
+        [Route("addUser")]
+        public IActionResult AddUser(User user)
+        {
+            _logger.LogDebug("Started: Inside UserController - AddUser");
+            _userService.AddUser(user);
+            _logger.LogDebug("Completed: Inside UserController - AddUser");
+            return Ok(user);
         }
     }
 }

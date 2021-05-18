@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.IO;
+using System.Reflection;
 using WebApi.Entities;
 
 namespace UserService.DBContext
@@ -13,11 +15,22 @@ namespace UserService.DBContext
                 _created = true;
                 Database.EnsureDeleted();
                 Database.EnsureCreated();
+                Users.Add(new User
+                {
+                    Username = "test",
+                    Password = "test",
+                    Email = "test@test.com",
+                    FirstName = "test",
+                    LastName = "test"
+                });
+                SaveChanges();
             }
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionbuilder)
         {
-            optionbuilder.UseSqlite(@"Data Source=F:\Assignment\sample.db");
+            string binPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            string dbPath = binPath + "\\sample.db";
+            optionbuilder.UseSqlite(@"Data Source=" + dbPath);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

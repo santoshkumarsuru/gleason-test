@@ -12,17 +12,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
+import { UsersComponent } from '@app/users';
+import { AddUserComponent } from '@app/add-user';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
         BrowserModule,
         ReactiveFormsModule,
         HttpClientModule,
-        AppRoutingModule
+        AppRoutingModule,
+        FormsModule
     ],
     declarations: [
         AppComponent,
         HomeComponent,
+        UsersComponent,
+        AddUserComponent,
         LoginComponent
     ],
     providers: [

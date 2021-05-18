@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -6,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using UserService.DBContext;
 using WebApi.Entities;
 using WebApi.Helpers;
 using WebApi.Models;
@@ -17,15 +19,11 @@ namespace WebApi.Services
         AuthenticateResponse Authenticate(AuthenticateRequest model);
         IEnumerable<User> GetAll();
         User GetById(int id);
+        void AddUser(User user);
     }
 
     public class UserRepository : IUserRepository
     {
-        // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        private List<User> _users = new List<User>
-        {
-            new User { Id = 1, FirstName = "Test", LastName = "User", Username = "test", Password = "test" }
-        };
 
         private readonly AppSettings _appSettings;
 
@@ -36,6 +34,11 @@ namespace WebApi.Services
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
         {
+            List<User> _users = new List<User>();
+            using (var dataContext = new SampleDBContext())
+            {
+                _users = dataContext.Users.Include(u => u.Roles).ToList();
+            }
             var user = _users.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
 
             // return null if user not found
@@ -47,14 +50,34 @@ namespace WebApi.Services
             return new AuthenticateResponse(user, token);
         }
 
+        public void AddUser(User user)
+        {
+            using (var dataContext = new SampleDBContext())
+            {
+                dataContext.SaveChanges();
+                dataContext.Users.Add(user);
+                dataContext.SaveChanges();
+            }
+        }
+
         public IEnumerable<User> GetAll()
         {
+            List<User> _users = new List<User>();
+            using (var dataContext = new SampleDBContext())
+            {
+                _users = dataContext.Users.Include(u => u.Roles).ToList();
+            }
             return _users;
         }
 
         public User GetById(int id)
         {
-            return _users.FirstOrDefault(x => x.Id == id);
+            List<User> _users = new List<User>();
+            using (var dataContext = new SampleDBContext())
+            {
+                _users = dataContext.Users.Include(u => u.Roles).ToList();
+            }
+            return _users.FirstOrDefault(x => x.UserId == id);
         }
 
         // helper methods
@@ -66,7 +89,7 @@ namespace WebApi.Services
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.UserId.ToString()) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
