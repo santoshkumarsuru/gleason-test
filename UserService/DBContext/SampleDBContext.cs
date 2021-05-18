@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using WebApi.Entities;
@@ -15,13 +16,20 @@ namespace UserService.DBContext
                 _created = true;
                 Database.EnsureDeleted();
                 Database.EnsureCreated();
+                List<Role> roles = new List<Role>();
+                roles.Add(new Role
+                {
+                    RoleName = "Global Gleason Admin"
+                });
                 Users.Add(new User
                 {
                     Username = "test",
                     Password = "test",
                     Email = "test@test.com",
                     FirstName = "test",
-                    LastName = "test"
+                    Customer = "Test Cust",
+                    LastName = "test",
+                    Roles = roles
                 });
                 SaveChanges();
             }
